@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                             cr.setLastMessage("");
                             cr.setUnreadCount(0);
                             cr.setTimestamp(chatRoomsObj.getString("created_at"));
-
+                            cr.setVisibility(chatRoomsObj.getString("visibility"));
                             chatRoomArrayList.add(cr);
                         }
 
@@ -255,11 +255,12 @@ public class MainActivity extends AppCompatActivity {
     // Ex: topic_1, topic_2
     private void subscribeToAllTopics() {
         for (ChatRoom cr : chatRoomArrayList) {
-
-            Intent intent = new Intent(this, GcmIntentService.class);
-            intent.putExtra(GcmIntentService.KEY, GcmIntentService.SUBSCRIBE);
-            intent.putExtra(GcmIntentService.TOPIC, "topic_" + cr.getId());
-            startService(intent);
+            if (cr.getVisibility().equals("1")) {
+                Intent intent = new Intent(this, GcmIntentService.class);
+                intent.putExtra(GcmIntentService.KEY, GcmIntentService.SUBSCRIBE);
+                intent.putExtra(GcmIntentService.TOPIC, "topic_" + cr.getId());
+                startService(intent);
+            }
         }
     }
 

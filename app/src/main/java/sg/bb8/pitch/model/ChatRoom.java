@@ -65,7 +65,7 @@ public class ChatRoom implements Serializable {
         return visibility;
     }
 
-    public void setVisibility(String m_visibility) {
-        this.visibility = m_visibility;
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
     }
 }

@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
                             cr.setVisibility(chatRoomsObj.getString("visibility"));
                             if (cr.getVisibility() == "1") {
                                 chatRoomArrayList.add(cr);
-                            } else if (currentUser.getId().equals("4")){
+                            } else if (currentUser.getId().equals("4") || currentUser.getId().equals("1")){
                                 privateChatRoomArrayList.add(cr);
                             }
                         }

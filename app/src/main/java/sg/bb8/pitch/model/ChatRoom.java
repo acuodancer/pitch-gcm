@@ -12,12 +12,13 @@ public class ChatRoom implements Serializable {
     public ChatRoom() {
     }
 
-    public ChatRoom(String id, String name, String lastMessage, String timestamp, int unreadCount) {
+    public ChatRoom(String id, String name, String lastMessage, String timestamp, int unreadCount, String visibility) {
         this.id = id;
         this.name = name;
         this.lastMessage = lastMessage;
         this.timestamp = timestamp;
         this.unreadCount = unreadCount;
+        this.visibility = visibility;
     }
 
     public String getId() {

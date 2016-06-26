@@ -8,10 +8,43 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main"
     tools:context=".activity.MainActivity">
+            <TextView
+                android:id="@+id/public_room_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:padding="10dp"
+                android:text="Public Chat Rooms"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scrollbars="vertical"
+                android:paddingTop="5dp"
+                android:layout_weight="1"
+                android:layout_below="@id/public_room_text"/>
+
+            <TextView
+                android:id="@+id/private_room_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:padding="10dp"
+                android:text="Private Chat Rooms"
+                android:layout_below="@id/recycler_view"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/private_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:paddingTop="5dp"
+                android:scrollbars="vertical"
+                android:layout_weight="1"
+                android:layout_below="@id/private_room_text"/>
 </RelativeLayout>
+

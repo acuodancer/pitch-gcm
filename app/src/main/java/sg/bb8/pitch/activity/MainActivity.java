@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private ArrayList<ChatRoom> chatRoomArrayList;
     private ArrayList<ChatRoom> privateChatRoomArrayList;
-    private ChatRoomsAdapter mAdapter;
-    private RecyclerView recyclerView;
+    private ChatRoomsAdapter mAdapter, mPrivateAdapter;
+    private RecyclerView recyclerView, privateRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
+        privateRecyclerView = (RecyclerView) findViewById(R.id.private_recycler_view);
         /**
          * Broadcast receiver calls in two scenarios
          * 1. gcm registration is completed
@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        // Set up recycler view for all public chatrooms
         chatRoomArrayList = new ArrayList<>();
         mAdapter = new ChatRoomsAdapter(this, chatRoomArrayList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -114,7 +115,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
+        // Set up recycler view for all public chatrooms
         privateChatRoomArrayList = new ArrayList<>();
+        mPrivateAdapter = new ChatRoomsAdapter(this, privateChatRoomArrayList);
+        LinearLayoutManager privateLayoutManager = new LinearLayoutManager(this);
+        privateRecyclerView.setLayoutManager(privateLayoutManager);
+        privateRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(
+                getApplicationContext()));
+        privateRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        privateRecyclerView.setAdapter(mPrivateAdapter);
 
         recyclerView.addOnItemTouchListener(new ChatRoomsAdapter.RecyclerTouchListener(getApplicationContext(), recyclerView, new ChatRoomsAdapter.ClickListener() {
             @Override
@@ -214,6 +223,8 @@ public class MainActivity extends AppCompatActivity {
                             cr.setVisibility(chatRoomsObj.getString("visibility"));
                             if (cr.getVisibility() == "1") {
                                 chatRoomArrayList.add(cr);
+                            } else {
+                                privateChatRoomArrayList.add(cr);
                             }
                         }
 

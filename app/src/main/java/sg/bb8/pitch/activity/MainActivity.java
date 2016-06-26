@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private ArrayList<ChatRoom> chatRoomArrayList;
+    private ArrayList<ChatRoom> privateChatRoomArrayList;
     private ChatRoomsAdapter mAdapter;
     private RecyclerView recyclerView;
 

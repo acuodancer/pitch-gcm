@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Lincoln on 07/01/16.
  */
 public class ChatRoom implements Serializable {
-    String id, name, lastMessage, timestamp;
+    String id, name, lastMessage, timestamp, visibility;
     int unreadCount;
 
     public ChatRoom() {
@@ -58,5 +58,13 @@ public class ChatRoom implements Serializable {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(String m_visibility) {
+        this.visibility = m_visibility;
     }
 }

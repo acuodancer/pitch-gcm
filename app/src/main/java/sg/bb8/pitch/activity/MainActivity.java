@@ -114,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
+        privateChatRoomArrayList = new ArrayList<>();
+
         recyclerView.addOnItemTouchListener(new ChatRoomsAdapter.RecyclerTouchListener(getApplicationContext(), recyclerView, new ChatRoomsAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -210,7 +212,9 @@ public class MainActivity extends AppCompatActivity {
                             cr.setUnreadCount(0);
                             cr.setTimestamp(chatRoomsObj.getString("created_at"));
                             cr.setVisibility(chatRoomsObj.getString("visibility"));
-                            chatRoomArrayList.add(cr);
+                            if (cr.getVisibility() == "1") {
+                                chatRoomArrayList.add(cr);
+                            }
                         }
 
                     } else {

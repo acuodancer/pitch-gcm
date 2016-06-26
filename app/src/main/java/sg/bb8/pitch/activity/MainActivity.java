@@ -49,6 +49,7 @@ import sg.bb8.pitch.gcm.NotificationUtils;
 import sg.bb8.pitch.helper.SimpleDividerItemDecoration;
 import sg.bb8.pitch.model.ChatRoom;
 import sg.bb8.pitch.model.Message;
+import sg.bb8.pitch.model.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ChatRoom> privateChatRoomArrayList;
     private ChatRoomsAdapter mAdapter, mPrivateAdapter;
     private RecyclerView recyclerView, privateRecyclerView;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         privateRecyclerView = (RecyclerView) findViewById(R.id.private_recycler_view);
+
         /**
          * Broadcast receiver calls in two scenarios
          * 1. gcm registration is completed
@@ -141,6 +144,26 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }));
+
+        privateRecyclerView.addOnItemTouchListener(new ChatRoomsAdapter.RecyclerTouchListener(getApplicationContext(), privateRecyclerView, new ChatRoomsAdapter.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                // when chat is clicked, launch full chat thread activity
+                ChatRoom chatRoom = privateChatRoomArrayList.get(position);
+                Intent intent = new Intent(MainActivity.this, ChatRoomActivity.class);
+                intent.putExtra("chat_room_id", chatRoom.getId());
+                intent.putExtra("name", chatRoom.getName());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+        // Get current user
+        currentUser = MyApplication.getInstance().getPrefManager().getUser();
 
         /**
          * Always check for google play services availability before
@@ -223,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
                             cr.setVisibility(chatRoomsObj.getString("visibility"));
                             if (cr.getVisibility() == "1") {
                                 chatRoomArrayList.add(cr);
-                            } else {
+                            } else if (currentUser.getId().equals("4")){
                                 privateChatRoomArrayList.add(cr);
                             }
                         }

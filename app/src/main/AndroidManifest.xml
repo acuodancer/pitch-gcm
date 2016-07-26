@@ -78,7 +78,8 @@
         </service>
 
         <!-- END Added for GCM -->
-        <activity android:name=".activity.AllUsersActivity"></activity>
+        <activity android:name=".activity.AllUsersActivity" />
+        <activity android:name=".activity.ViewProfileActivity"></activity>
     </application>
 
 </manifest>

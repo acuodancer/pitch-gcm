@@ -9,12 +9,12 @@
     tools:showIn="@layout/activity_main"
     tools:context=".activity.MainActivity">
             <TextView
-                android:id="@+id/public_room_text"
+                android:id="@+id/all_users_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:padding="10dp"
-                android:text="Public Chat Rooms"
+                android:text="All Users"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
 
@@ -25,7 +25,7 @@
                 android:scrollbars="vertical"
                 android:paddingTop="5dp"
                 android:layout_weight="1"
-                android:layout_below="@id/public_room_text"/>
+                android:layout_below="@id/all_users_text"/>
 
             <TextView
                 android:id="@+id/private_room_text"

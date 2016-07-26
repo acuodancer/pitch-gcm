@@ -290,7 +290,7 @@ public class ChatRoomActivity extends AppCompatActivity {
                             String private_room_id = userObj.getString("private_room_id");
                             String pending_request_id = userObj.getString("pending_request_id");
                             User user = new User(userId, userName, null, private_room_id, pending_request_id);
-                            
+
                             Message message = new Message();
                             message.setId(commentId);
                             message.setMessage(commentText);

@@ -190,7 +190,9 @@ public class ChatRoomActivity extends AppCompatActivity {
                         JSONObject userObj = obj.getJSONObject("user");
                         String userId = userObj.getString("user_id");
                         String userName = userObj.getString("name");
-                        User user = new User(userId, userName, null);
+                        String private_room_id = userObj.getString("private_room_id");
+                        String pending_request_id = userObj.getString("pending_request_id");
+                        User user = new User(userId, userName, null, private_room_id, pending_request_id);
 
                         Message message = new Message();
                         message.setId(commentId);
@@ -285,8 +287,10 @@ public class ChatRoomActivity extends AppCompatActivity {
                             JSONObject userObj = commentObj.getJSONObject("user");
                             String userId = userObj.getString("user_id");
                             String userName = userObj.getString("username");
-                            User user = new User(userId, userName, null);
-
+                            String private_room_id = userObj.getString("private_room_id");
+                            String pending_request_id = userObj.getString("pending_request_id");
+                            User user = new User(userId, userName, null, private_room_id, pending_request_id);
+                            
                             Message message = new Message();
                             message.setId(commentId);
                             message.setMessage(commentText);

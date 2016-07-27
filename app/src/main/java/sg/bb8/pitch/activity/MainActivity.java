@@ -260,7 +260,9 @@ public class MainActivity extends AppCompatActivity {
                             cr.setEmail(userObj.getString("email"));
                             cr.setPrivate_room_id(userObj.getString("private_room_id"));
                             cr.setPending_request_id(userObj.getString("pending_request_id"));
-                            allUsersArrayList.add(cr);
+                            if (cr.getId() != currentUser.getId()) {
+                                allUsersArrayList.add(cr);
+                            }
                         }
 
                     } else {
@@ -315,11 +317,18 @@ public class MainActivity extends AppCompatActivity {
                             cr.setUnreadCount(0);
                             cr.setTimestamp(chatRoomsObj.getString("created_at"));
                             cr.setVisibility(chatRoomsObj.getString("visibility"));
+                            // Each user can see the corresponding private chatroom
+                            if (currentUser.getPrivate_room_id().equals(cr.getId())) {
+                                privateChatRoomArrayList.add(cr);
+                            }
+                            /*
+                            * Outdated code
                             if (cr.getVisibility() == "1") {
                                 chatRoomArrayList.add(cr);
                             } else if (currentUser.getId().equals("4") || currentUser.getId().equals("1")){
                                 privateChatRoomArrayList.add(cr);
                             }
+                            */
                         }
 
                     } else {
@@ -332,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
-                mAdapter.notifyDataSetChanged();
+                mPrivateAdapter.notifyDataSetChanged();
 
                 // subscribing to all chat room topics
                 subscribeToAllTopics();
@@ -359,17 +368,15 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
     }
 
-    // Subscribing to all chat room topics
+    // Subscribing to all private chatrooms
     // each topic name starts with `topic_` followed by the ID of the chat room
     // Ex: topic_1, topic_2
     private void subscribeToAllTopics() {
-        for (ChatRoom cr : chatRoomArrayList) {
-            if (cr.getVisibility().equals("1")) {
-                Intent intent = new Intent(this, GcmIntentService.class);
-                intent.putExtra(GcmIntentService.KEY, GcmIntentService.SUBSCRIBE);
-                intent.putExtra(GcmIntentService.TOPIC, "topic_" + cr.getId());
-                startService(intent);
-            }
+        for (ChatRoom cr : privateChatRoomArrayList) {
+            Intent intent = new Intent(this, GcmIntentService.class);
+            intent.putExtra(GcmIntentService.KEY, GcmIntentService.SUBSCRIBE);
+            intent.putExtra(GcmIntentService.TOPIC, "topic_" + cr.getId());
+            startService(intent);
         }
     }
 

@@ -10,6 +10,6 @@
         android:textColor="#444444"
         android:textStyle="bold"
         android:textSize="16dp"
-        android:padding="5dp"/>
+        android:padding="10dp"/>
 
 </RelativeLayout>

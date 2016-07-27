@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
                             cr.setEmail(userObj.getString("email"));
                             cr.setPrivate_room_id(userObj.getString("private_room_id"));
                             cr.setPending_request_id(userObj.getString("pending_request_id"));
-                            if (cr.getId() != currentUser.getId()) {
+                            if (!cr.getId().equals(currentUser.getId())) {
                                 allUsersArrayList.add(cr);
                             }
                         }

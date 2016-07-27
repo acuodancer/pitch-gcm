@@ -343,7 +343,9 @@ public class MainActivity extends AppCompatActivity {
 
                 mPrivateAdapter.notifyDataSetChanged();
 
-                // subscribing to all chat room topics
+                // subscribing to global topic
+                // and all visible private rooms
+                subscribeToGlobalTopic();
                 subscribeToAllTopics();
             }
         }, new Response.ErrorListener() {

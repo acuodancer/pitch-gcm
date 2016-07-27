@@ -43,7 +43,6 @@ public class AllUsersAdapter extends RecyclerView.Adapter<AllUsersAdapter.ViewHo
     public AllUsersAdapter(Context mContext, ArrayList<User> allUsersArrayList) {
         this.mContext = mContext;
         this.allUsersArrayList = allUsersArrayList;
-
         Calendar calendar = Calendar.getInstance();
         today = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
     }

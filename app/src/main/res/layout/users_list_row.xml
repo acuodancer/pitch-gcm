@@ -9,7 +9,7 @@
         android:layout_alignParentTop="true"
         android:textColor="#444444"
         android:textStyle="bold"
-        android:textSize="16dp" />
-
+        android:textSize="16dp"
+        android:paddingBottom="5dp"/>
     
 </RelativeLayout>

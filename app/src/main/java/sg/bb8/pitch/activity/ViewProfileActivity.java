@@ -132,7 +132,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
                     // check for error
                     if (obj.getBoolean("error") == false) {
-                        Toast.makeText(getApplicationContext(), "Unable to update private room id to selected user. " , Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Private Room ID Updated Successfully!" , Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "Unable to update private room id to selected user. " + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
                     }
@@ -165,7 +165,56 @@ public class ViewProfileActivity extends AppCompatActivity {
         MyApplication.getInstance().addToRequestQueue(strReq);
     }
 
-    private void updateUserPendingRequestId(int userId, int pendingRequestId) {
+    private void updateUserPendingRequestId(String userId, String requestId) {
 
+        final String pendingRequestId = requestId;
+
+        String endPoint = EndPoints.USER_PENDING_REQUEST.replace("_ID_", userId);
+
+        Log.e(TAG, "endpoint: " + endPoint);
+
+        StringRequest strReq = new StringRequest(Request.Method.PUT,
+                endPoint, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "response: " + response);
+
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    // check for error
+                    if (obj.getBoolean("error") == false) {
+                        Toast.makeText(getApplicationContext(), "Pending Request ID Updated Successfully!" , Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Unable to update private room id to selected user. " + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(getApplicationContext(), "Json parse error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(getApplicationContext(), "Volley error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("pending_request_id", pendingRequestId);
+                Log.e(TAG, "params: " + params.toString());
+                return params;
+            }
+        };
+
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(strReq);
     }
 }

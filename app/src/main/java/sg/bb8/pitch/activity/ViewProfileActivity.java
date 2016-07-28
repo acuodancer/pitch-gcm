@@ -116,7 +116,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         updateUserPrivateRoomId(currentUser.getId().toString(), Integer.toString(currentPrivateId));
         updateUserPrivateRoomId(targetUserId, Integer.toString(currentPrivateId));
         String roomName = "pcr_" + currentUser.getName() + "_" + targetUserName;
-        createPrivateChatRoom(Integer.toString(currentPrivateId), roomName);
+        MyApplication.getInstance().getPrefManager().setCurrentPrivateId(++currentPrivateId);
     }
 
     private void updateUserPrivateRoomId(String userId, String roomId) {
@@ -246,7 +246,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
                     // check for error
                     if (obj.getBoolean("error") == false) {
-                        Toast.makeText(getApplicationContext(), "Private Chat Room Created Succesfully" , Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Private Chat Room Created Succesfully!" , Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "Unable to create private chat room. " + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
                     }

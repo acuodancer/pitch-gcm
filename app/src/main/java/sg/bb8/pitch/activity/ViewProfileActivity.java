@@ -95,7 +95,7 @@ public class ViewProfileActivity extends AppCompatActivity {
             }
         });
 
-        btnRequest.setOnClickListener(new View.OnClickListener() {
+        btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 acceptRequest(targetUserId, targetUserName);

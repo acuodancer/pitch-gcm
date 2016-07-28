@@ -84,8 +84,10 @@ public class ViewProfileActivity extends AppCompatActivity {
         // show accept button if target user has requested user
         if (targetPendingRequestId.equals(currentUser.getId())) {
             btnAccept.setVisibility(View.VISIBLE);
+            Toast.makeText(getApplicationContext(), "This user has requested for you!" , Toast.LENGTH_LONG).show();
         } else {
             btnAccept.setVisibility(View.INVISIBLE);
+            Toast.makeText(getApplicationContext(), "This user has not requested for you!" , Toast.LENGTH_LONG).show();
         }
 
         btnRequest.setOnClickListener(new View.OnClickListener() {

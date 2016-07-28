@@ -56,6 +56,6 @@
         android:layout_height="wrap_content"
         android:text="Accept Request"
         android:visibility="invisible"
-        android:layout_below="@id/user_requested_status_text"/>
+        android:layout_below="@id/request_btn"/>
 
 </RelativeLayout>

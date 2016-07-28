@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private ArrayList<User> allUsersArrayList;
-    private ArrayList<ChatRoom> chatRoomArrayList;
+    //private ArrayList<ChatRoom> chatRoomArrayList;
     private ArrayList<ChatRoom> privateChatRoomArrayList;
     private AllUsersAdapter mAdapter;
     private ChatRoomsAdapter mPrivateAdapter;
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        // Set up recycler view for all public chatrooms
+        // Set up recycler view for all private chatrooms
         privateChatRoomArrayList = new ArrayList<>();
         mPrivateAdapter = new ChatRoomsAdapter(this, privateChatRoomArrayList);
         LinearLayoutManager privateLayoutManager = new LinearLayoutManager(this);
@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateRow(String chatRoomId, Message message) {
         for (ChatRoom cr : privateChatRoomArrayList) {
             if (cr.getId().equals(chatRoomId)) {
-                int index = allUsersArrayList.indexOf(cr);
+                int index = privateChatRoomArrayList.indexOf(cr);
                 cr.setLastMessage(message.getMessage());
                 cr.setUnreadCount(cr.getUnreadCount() + 1);
                 privateChatRoomArrayList.remove(index);
@@ -255,12 +255,20 @@ public class MainActivity extends AppCompatActivity {
                         JSONArray usersArray = obj.getJSONArray("users");
                         for (int i = 0; i < usersArray.length(); i++) {
                             JSONObject userObj = (JSONObject) usersArray.get(i);
-                            User cr = new User();
+                            User cr = new User(
+                                    userObj.getString("user_id"),
+                                    userObj.getString("name"),
+                                    userObj.getString("email"),
+                                    userObj.getString("private_room_id"),
+                                    userObj.getString("pending_request_id"));
+                            /*User cr = new User();
                             cr.setId(userObj.getString("user_id"));
                             cr.setName(userObj.getString("name"));
                             cr.setEmail(userObj.getString("email"));
                             cr.setPrivate_room_id(userObj.getString("private_room_id"));
                             cr.setPending_request_id(userObj.getString("pending_request_id"));
+                            */
+                            Toast.makeText(getApplicationContext(), cr.getName() + " " + cr.getPending_request_id(), Toast.LENGTH_LONG).show();
                             if (!cr.getId().equals(currentUser.getId())) {
                                 allUsersArrayList.add(cr);
                             }
@@ -312,28 +320,30 @@ public class MainActivity extends AppCompatActivity {
                         MyApplication.getInstance().getPrefManager().setCurrentPrivateId(chatRoomsArray.length()+1);
                         for (int i = 0; i < chatRoomsArray.length(); i++) {
                             JSONObject chatRoomsObj = (JSONObject) chatRoomsArray.get(i);
-                            ChatRoom cr = new ChatRoom();
+                            ChatRoom cr = new ChatRoom(
+                                    chatRoomsObj.getString("chat_room_id"),
+                                    chatRoomsObj.getString("name"),
+                                    "",
+                                    chatRoomsObj.getString("created_at"),
+                                    0,
+                                    chatRoomsObj.getString("visibility")
+
+                            );
+                            /*
                             cr.setId(chatRoomsObj.getString("chat_room_id"));
                             cr.setName(chatRoomsObj.getString("name"));
                             cr.setLastMessage("");
                             cr.setUnreadCount(0);
                             cr.setTimestamp(chatRoomsObj.getString("created_at"));
                             cr.setVisibility(chatRoomsObj.getString("visibility"));
+                            */
                             // Each user can only see the corresponding private chat room
                             if (currentUser.getPrivate_room_id().equals(cr.getId())) {
                                 privateChatRoomArrayList.add(cr);
-                                //Toast.makeText(getApplicationContext(), "There is a private chat room", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "There is a private chat room", Toast.LENGTH_LONG).show();
                             } else {
-                                //Toast.makeText(getApplicationContext(), "There is no private chat room", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "There is no private chat room" + cr.getId(), Toast.LENGTH_LONG).show();
                             }
-                            /*
-                            * Outdated code
-                            if (cr.getVisibility() == "1") {
-                                chatRoomArrayList.add(cr);
-                            } else if (currentUser.getId().equals("4") || currentUser.getId().equals("1")){
-                                privateChatRoomArrayList.add(cr);
-                            }
-                            */
                         }
 
                     } else {
@@ -348,9 +358,8 @@ public class MainActivity extends AppCompatActivity {
 
                 mPrivateAdapter.notifyDataSetChanged();
 
-                // subscribing to global topic
+
                 // and all visible private rooms
-                subscribeToGlobalTopic();
                 subscribeToAllTopics();
             }
         }, new Response.ErrorListener() {
@@ -377,7 +386,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Subscribing to all private chatrooms
     // each topic name starts with `topic_` followed by the ID of the chat room
-    // Ex: topic_1, topic_2
     private void subscribeToAllTopics() {
         for (ChatRoom cr : privateChatRoomArrayList) {
             Intent intent = new Intent(this, GcmIntentService.class);
@@ -397,6 +405,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        //
+        // fetchChatRooms();
 
         // register GCM registration complete receiver
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,

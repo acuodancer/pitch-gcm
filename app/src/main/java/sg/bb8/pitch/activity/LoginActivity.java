@@ -111,11 +111,13 @@ public class LoginActivity extends AppCompatActivity {
                         // user successfully logged in
 
                         JSONObject userObj = obj.getJSONObject("user");
-                        User user = new User(userObj.getString("user_id"),
+                        User user = new User(
+                                userObj.getString("user_id"),
                                 userObj.getString("name"),
                                 userObj.getString("email"),
                                 userObj.getString("private_room_id"),
                                 userObj.getString("pending_request_id"));
+                                Toast.makeText(getApplicationContext(), user.getName() + " " + user.getPrivate_room_id() + " " + user.getPending_request_id(), Toast.LENGTH_LONG).show();
 
                         // storing user in shared preferences
                         MyApplication.getInstance().getPrefManager().storeUser(user);

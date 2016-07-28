@@ -84,10 +84,10 @@ public class ViewProfileActivity extends AppCompatActivity {
         // show accept button if target user has requested user
         if (targetPendingRequestId.equals(currentUser.getId())) {
             btnAccept.setVisibility(View.VISIBLE);
-            Toast.makeText(getApplicationContext(), "This user has requested for you!" , Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Yours: " + currentUser.getId() + " Theirs: " + targetPendingRequestId , Toast.LENGTH_LONG).show();
         } else {
             btnAccept.setVisibility(View.INVISIBLE);
-            Toast.makeText(getApplicationContext(), "This user has not requested for you!" , Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Yours: " + currentUser.getId() + " Theirs: " + targetPendingRequestId , Toast.LENGTH_LONG).show();
         }
 
         btnRequest.setOnClickListener(new View.OnClickListener() {
@@ -106,18 +106,29 @@ public class ViewProfileActivity extends AppCompatActivity {
     }
 
     private void sendRequest(String targetUserId) {
+        // offline update
         currentUser.setPending_request_id(targetUserId);
+        // online update
         updateUserPendingRequestId(currentUser.getId().toString(), targetUserId);
     }
 
     private void acceptRequest(String targetUserId, String targetUserName) {
+        // get index for next room
         int currentPrivateId = MyApplication.getInstance().getPrefManager().getCurrentPrivateId();
         currentPrivateId++;
+        // offline update
+        currentUser.setPrivate_room_id(Integer.toString(currentPrivateId));
+        // online update
         updateUserPrivateRoomId(currentUser.getId().toString(), Integer.toString(currentPrivateId));
         updateUserPrivateRoomId(targetUserId, Integer.toString(currentPrivateId));
+        // private room creation
         String roomName = currentUser.getName() + "_" + targetUserName;
         createPrivateChatRoom(Integer.toString(currentPrivateId), roomName);
+        // update index
         MyApplication.getInstance().getPrefManager().setCurrentPrivateId(++currentPrivateId);
+        // return to main menu
+        Intent intent = new Intent(ViewProfileActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void updateUserPrivateRoomId(String userId, String roomId) {
@@ -276,6 +287,14 @@ public class ViewProfileActivity extends AppCompatActivity {
                 return params;
             }
         };
+
+        int socketTimeout = 0;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+
+        strReq.setRetryPolicy(policy);
+
 
         //Adding request to request queue
         MyApplication.getInstance().addToRequestQueue(strReq);

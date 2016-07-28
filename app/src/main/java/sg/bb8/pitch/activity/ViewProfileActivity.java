@@ -65,9 +65,9 @@ public class ViewProfileActivity extends AppCompatActivity {
         btnRequest = (Button) findViewById(R.id.request_btn);
         currentUser = MyApplication.getInstance().getPrefManager().getUser();
         intent = getIntent();
-        String targetUserName = intent.getStringExtra("target_user_name");
+        final String targetUserName = intent.getStringExtra("target_user_name");
         final String targetUserId = intent.getStringExtra("target_user_id");
-        String targetPendingRequestId = intent.getStringExtra("target_user_pending_request_id");
+        final String targetPendingRequestId = intent.getStringExtra("target_user_pending_request_id");
         userName.setText("Name: " + targetUserName);
         // Get gender randomly for now
         if (Integer.parseInt(targetUserId) % 2 == 0) {
@@ -98,7 +98,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                acceptRequest(targetUserId);
+                acceptRequest(targetUserId, targetUserName);
             }
         });
     }
@@ -108,12 +108,13 @@ public class ViewProfileActivity extends AppCompatActivity {
         updateUserPendingRequestId(currentUser.getId().toString(), targetUserId);
     }
 
-    private void acceptRequest(String targetUserId) {
+    private void acceptRequest(String targetUserId, String targetUserName) {
         int currentPrivateId = MyApplication.getInstance().getPrefManager().getCurrentPrivateId();
         currentPrivateId++;
         updateUserPrivateRoomId(currentUser.getId().toString(), Integer.toString(currentPrivateId));
         updateUserPrivateRoomId(targetUserId, Integer.toString(currentPrivateId));
-        createPrivateChatRoom(Integer.toString(currentPrivateId));
+        String roomName = "pcr_" + currentUser.getName() + "_" + targetUserName;
+        createPrivateChatRoom(Integer.toString(currentPrivateId), roomName);
     }
 
     private void updateUserPrivateRoomId(String userId, String roomId) {
@@ -222,7 +223,58 @@ public class ViewProfileActivity extends AppCompatActivity {
         MyApplication.getInstance().addToRequestQueue(strReq);
     }
 
-    private void createPrivateChatRoom(String chatRoomId) {
+    private void createPrivateChatRoom(String roomId, String roomName) {
 
+        final String chatRoomId = roomId;
+        final String chatRoomName = roomName;
+
+        String endPoint = EndPoints.CHAT_ROOM_CREATE;
+
+        Log.e(TAG, "endpoint: " + endPoint);
+
+        StringRequest strReq = new StringRequest(Request.Method.PUT,
+                endPoint, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "response: " + response);
+
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    // check for error
+                    if (obj.getBoolean("error") == false) {
+                        Toast.makeText(getApplicationContext(), "Private Chat Room Created Succesfully" , Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Unable to create private chat room. " + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(getApplicationContext(), "Json parse error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(getApplicationContext(), "Volley error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("chat_room_id", chatRoomId);
+                params.put("chat_room_name", chatRoomName);
+                Log.e(TAG, "params: " + params.toString());
+                return params;
+            }
+        };
+
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(strReq);
     }
 }

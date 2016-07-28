@@ -10,8 +10,8 @@ public class EndPoints {
     public static final String LOGIN = BASE_URL + "/user/login";
     public static final String USER = BASE_URL + "/user/_ID_";
     public static final String USERS = BASE_URL + "/users";
-    public static final String USER_PRIVATE_ROOM = BASE_URL + "/user/_ID_/private_room";
-    public static final String USER_PENDING_REQUEST = BASE_URL + "/user/_ID_/pending_request";
+    public static final String USER_PRIVATE_ROOM = BASE_URL + "/user/_ID_/private_room_id";
+    public static final String USER_PENDING_REQUEST = BASE_URL + "/user/_ID_/pending_request_id";
     public static final String CHAT_ROOMS = BASE_URL + "/chat_rooms";
     public static final String CHAT_THREAD = BASE_URL + "/chat_rooms/_ID_";
     public static final String CHAT_ROOM_MESSAGE = BASE_URL + "/chat_rooms/_ID_/message";

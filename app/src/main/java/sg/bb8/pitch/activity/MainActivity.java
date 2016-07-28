@@ -150,8 +150,9 @@ public class MainActivity extends AppCompatActivity {
                 // when an user is clicked, launch view profile activity
                 User user = allUsersArrayList.get(position);
                 Intent intent = new Intent(MainActivity.this, ViewProfileActivity.class);
-                intent.putExtra("user_id", user.getId());
-                intent.putExtra("name", user.getName());
+                intent.putExtra("target_user_id", user.getId());
+                intent.putExtra("target_user_name", user.getName());
+                intent.putExtra("target_user_pending_request_id", user.getPending_request_id());
                 startActivity(intent);
             }
 

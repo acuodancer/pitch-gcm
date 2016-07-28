@@ -31,11 +31,31 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_below="@id/user_name_text"/>
+
+    <TextView
+        android:id="@+id/user_requested_status_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:padding="10dp"
+        android:text="Requested: "
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_below="@id/user_gender_text"/>
     
     <Button
+        android:id="@+id/request_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Send Request"
-        android:layout_below="@id/user_gender_text"/>
+        android:layout_below="@id/user_requested_status_text"/>
+
+    <Button
+        android:id="@+id/accept_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Accept Request"
+        android:visibility="invisible"
+        android:layout_below="@id/user_requested_status_text"/>
 
 </RelativeLayout>

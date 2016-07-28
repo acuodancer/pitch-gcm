@@ -234,7 +234,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         Log.e(TAG, "endpoint: " + endPoint);
 
-        StringRequest strReq = new StringRequest(Request.Method.PUT,
+        StringRequest strReq = new StringRequest(Request.Method.POST,
                 endPoint, new Response.Listener<String>() {
 
             @Override

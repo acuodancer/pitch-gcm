@@ -319,9 +319,12 @@ public class MainActivity extends AppCompatActivity {
                             cr.setUnreadCount(0);
                             cr.setTimestamp(chatRoomsObj.getString("created_at"));
                             cr.setVisibility(chatRoomsObj.getString("visibility"));
-                            // Each user can see the corresponding private chatroom
+                            // Each user can only see the corresponding private chat room
                             if (currentUser.getPrivate_room_id().equals(cr.getId())) {
                                 privateChatRoomArrayList.add(cr);
+                                //Toast.makeText(getApplicationContext(), "There is a private chat room", Toast.LENGTH_LONG).show();
+                            } else {
+                                //Toast.makeText(getApplicationContext(), "There is no private chat room", Toast.LENGTH_LONG).show();
                             }
                             /*
                             * Outdated code

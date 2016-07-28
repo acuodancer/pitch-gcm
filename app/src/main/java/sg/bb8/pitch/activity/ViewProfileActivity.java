@@ -115,7 +115,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         currentPrivateId++;
         updateUserPrivateRoomId(currentUser.getId().toString(), Integer.toString(currentPrivateId));
         updateUserPrivateRoomId(targetUserId, Integer.toString(currentPrivateId));
-        String roomName = "pcr_" + currentUser.getName() + "_" + targetUserName;
+        String roomName = currentUser.getName() + "_" + targetUserName;
         createPrivateChatRoom(Integer.toString(currentPrivateId), roomName);
         MyApplication.getInstance().getPrefManager().setCurrentPrivateId(++currentPrivateId);
     }

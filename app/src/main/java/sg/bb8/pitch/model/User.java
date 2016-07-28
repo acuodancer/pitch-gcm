@@ -9,8 +9,8 @@ public class User implements Serializable {
     String id;
     String name;
     String email;
-    private String private_room_id;
-    private String pending_request_id;
+    String private_room_id;
+    String pending_request_id;
 
     public User() {
     }
@@ -19,8 +19,8 @@ public class User implements Serializable {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.setPrivate_room_id(private_room_id);
-        this.setPending_request_id(pending_request_id);
+        this.private_room_id = private_room_id;
+        this.pending_request_id = pending_request_id;
     }
 
     public String getId() {

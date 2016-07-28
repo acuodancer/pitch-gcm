@@ -69,19 +69,19 @@ public class ViewProfileActivity extends AppCompatActivity {
         final String targetUserId = intent.getStringExtra("target_user_id");
         String targetPendingRequestId = intent.getStringExtra("target_user_pending_request_id");
         userName.setText("Name: " + targetUserName);
-
+        // Get gender randomly for now
         if (Integer.parseInt(targetUserId) % 2 == 0) {
             userGender.setText("Gender: Male");
         } else {
             userGender.setText("Gender: Female");
         }
-
+        // Show requested status if user has requested target user
         if (currentUser.getPending_request_id().equals(targetUserId)) {
             userRequestStatus.setText("Requested: Yes");
         } else {
             userRequestStatus.setText("Requested: No");
         }
-
+        // show accept button if target user has requested user
         if (targetPendingRequestId.equals(currentUser.getId())) {
             btnAccept.setVisibility(View.VISIBLE);
         } else {
@@ -105,11 +105,15 @@ public class ViewProfileActivity extends AppCompatActivity {
 
     private void sendRequest(String targetUserId) {
         currentUser.setPending_request_id(targetUserId);
-
+        updateUserPendingRequestId(currentUser.getId().toString(), targetUserId);
     }
 
     private void acceptRequest(String targetUserId) {
-
+        int currentPrivateId = MyApplication.getInstance().getPrefManager().getCurrentPrivateId();
+        currentPrivateId++;
+        updateUserPrivateRoomId(currentUser.getId().toString(), Integer.toString(currentPrivateId));
+        updateUserPrivateRoomId(targetUserId, Integer.toString(currentPrivateId));
+        createPrivateChatRoom(Integer.toString(currentPrivateId));
     }
 
     private void updateUserPrivateRoomId(String userId, String roomId) {
@@ -216,5 +220,9 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         //Adding request to request queue
         MyApplication.getInstance().addToRequestQueue(strReq);
+    }
+
+    private void createPrivateChatRoom(String chatRoomId) {
+
     }
 }

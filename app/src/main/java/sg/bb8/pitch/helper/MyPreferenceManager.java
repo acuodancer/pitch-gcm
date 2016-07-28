@@ -38,6 +38,9 @@ public class MyPreferenceManager {
     private static final String KEY_USER_PENDING = "user_pending_room_id";
     private static final String KEY_NOTIFICATIONS = "notifications";
 
+    // Shared preferences values
+    private int currentPrivateId;
+
     // Constructor
     public MyPreferenceManager(Context context) {
         this._context = context;
@@ -93,5 +96,13 @@ public class MyPreferenceManager {
     public void clear() {
         editor.clear();
         editor.commit();
+    }
+
+    public int getCurrentPrivateId() {
+        return currentPrivateId;
+    }
+
+    public void setCurrentPrivateId(int currentPrivateId) {
+        this.currentPrivateId = currentPrivateId;
     }
 }

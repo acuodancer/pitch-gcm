@@ -309,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
                     // check for error flag
                     if (obj.getBoolean("error") == false) {
                         JSONArray chatRoomsArray = obj.getJSONArray("chat_rooms");
+                        MyApplication.getInstance().getPrefManager().setCurrentPrivateId(chatRoomsArray.length()+1);
                         for (int i = 0; i < chatRoomsArray.length(); i++) {
                             JSONObject chatRoomsObj = (JSONObject) chatRoomsArray.get(i);
                             ChatRoom cr = new ChatRoom();

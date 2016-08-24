@@ -120,11 +120,15 @@ public class ChatRoomActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        // fetchChatThread();
+
         // registering the receiver for new notification
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(Config.PUSH_NOTIFICATION));
 
         NotificationUtils.clearNotifications();
+
+
     }
 
     @Override
@@ -190,7 +194,7 @@ public class ChatRoomActivity extends AppCompatActivity {
                         JSONObject userObj = obj.getJSONObject("user");
                         String userId = userObj.getString("user_id");
                         String userName = userObj.getString("name");
-                        User user = new User(userId, userName, null);
+                        User user = new User(userId, userName, null, null, null);
 
                         Message message = new Message();
                         message.setId(commentId);
@@ -285,7 +289,7 @@ public class ChatRoomActivity extends AppCompatActivity {
                             JSONObject userObj = commentObj.getJSONObject("user");
                             String userId = userObj.getString("user_id");
                             String userName = userObj.getString("username");
-                            User user = new User(userId, userName, null);
+                            User user = new User(userId, userName, null, null, null);
 
                             Message message = new Message();
                             message.setId(commentId);

@@ -34,7 +34,12 @@ public class MyPreferenceManager {
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_USER_NAME = "user_name";
     private static final String KEY_USER_EMAIL = "user_email";
+    private static final String KEY_USER_PRIVATE = "user_private_room_id";
+    private static final String KEY_USER_PENDING = "user_pending_room_id";
     private static final String KEY_NOTIFICATIONS = "notifications";
+
+    // Shared preferences values
+    private int currentPrivateId;
 
     // Constructor
     public MyPreferenceManager(Context context) {
@@ -48,6 +53,8 @@ public class MyPreferenceManager {
         editor.putString(KEY_USER_ID, user.getId());
         editor.putString(KEY_USER_NAME, user.getName());
         editor.putString(KEY_USER_EMAIL, user.getEmail());
+        editor.putString(KEY_USER_PRIVATE, user.getPrivate_room_id());
+        editor.putString(KEY_USER_PENDING, user.getPending_request_id());
         editor.commit();
 
         Log.e(TAG, "User is stored in shared preferences. " + user.getName() + ", " + user.getEmail());
@@ -55,12 +62,13 @@ public class MyPreferenceManager {
 
     public User getUser() {
         if (pref.getString(KEY_USER_ID, null) != null) {
-            String id, name, email;
+            String id, name, email, private_room_id, pending_request_id;
             id = pref.getString(KEY_USER_ID, null);
             name = pref.getString(KEY_USER_NAME, null);
             email = pref.getString(KEY_USER_EMAIL, null);
-
-            User user = new User(id, name, email);
+            private_room_id = pref.getString(KEY_USER_PRIVATE, null);
+            pending_request_id = pref.getString(KEY_USER_PENDING, null);
+            User user = new User(id, name, email, private_room_id, pending_request_id);
             return user;
         }
         return null;
@@ -88,5 +96,13 @@ public class MyPreferenceManager {
     public void clear() {
         editor.clear();
         editor.commit();
+    }
+
+    public int getCurrentPrivateId() {
+        return currentPrivateId;
+    }
+
+    public void setCurrentPrivateId(int currentPrivateId) {
+        this.currentPrivateId = currentPrivateId;
     }
 }

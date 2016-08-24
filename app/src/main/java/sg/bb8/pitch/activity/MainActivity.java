@@ -268,14 +268,14 @@ public class MainActivity extends AppCompatActivity {
                             cr.setPrivate_room_id(userObj.getString("private_room_id"));
                             cr.setPending_request_id(userObj.getString("pending_request_id"));
                             */
-                            Toast.makeText(getApplicationContext(), cr.getName() + " " + cr.getPending_request_id(), Toast.LENGTH_LONG).show();
+                            // Toast.makeText(getApplicationContext(), cr.getId() + " " + cr.getName() + " " + cr.getPrivate_room_id() + " " + cr.getPending_request_id(), Toast.LENGTH_LONG).show();
                             if (!cr.getId().equals(currentUser.getId())) {
                                 allUsersArrayList.add(cr);
                             }
                         }
 
                     } else {
-                        // error in fetching chat rooms
+                        // error in fetching users
                         Toast.makeText(getApplicationContext(), "" + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
                     }
 
@@ -337,12 +337,14 @@ public class MainActivity extends AppCompatActivity {
                             cr.setTimestamp(chatRoomsObj.getString("created_at"));
                             cr.setVisibility(chatRoomsObj.getString("visibility"));
                             */
+
+
                             // Each user can only see the corresponding private chat room
                             if (currentUser.getPrivate_room_id().equals(cr.getId())) {
                                 privateChatRoomArrayList.add(cr);
-                                Toast.makeText(getApplicationContext(), "There is a private chat room", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), "There is a private chat room " + cr.getId(), Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(getApplicationContext(), "There is no private chat room" + cr.getId(), Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), "There is no private chat room " + cr.getId(), Toast.LENGTH_LONG).show();
                             }
                         }
 
@@ -358,8 +360,7 @@ public class MainActivity extends AppCompatActivity {
 
                 mPrivateAdapter.notifyDataSetChanged();
 
-
-                // and all visible private rooms
+                // subscribe to all visible private rooms
                 subscribeToAllTopics();
             }
         }, new Response.ErrorListener() {

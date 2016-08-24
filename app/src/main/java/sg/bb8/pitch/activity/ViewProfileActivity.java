@@ -41,7 +41,9 @@ import sg.bb8.pitch.adapter.ChatRoomThreadAdapter;
 import sg.bb8.pitch.app.Config;
 import sg.bb8.pitch.app.EndPoints;
 import sg.bb8.pitch.app.MyApplication;
+import sg.bb8.pitch.gcm.GcmIntentService;
 import sg.bb8.pitch.gcm.NotificationUtils;
+import sg.bb8.pitch.model.ChatRoom;
 import sg.bb8.pitch.model.Message;
 import sg.bb8.pitch.model.User;
 
@@ -139,7 +141,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         Log.e(TAG, "endpoint: " + endPoint);
 
-        StringRequest strReq = new StringRequest(Request.Method.PUT,
+        StringRequest strReq = new StringRequest(Request.Method.POST,
                 endPoint, new Response.Listener<String>() {
 
             @Override
@@ -192,7 +194,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         Log.e(TAG, "endpoint: " + endPoint);
 
-        StringRequest strReq = new StringRequest(Request.Method.PUT,
+        StringRequest strReq = new StringRequest(Request.Method.POST,
                 endPoint, new Response.Listener<String>() {
 
             @Override
@@ -298,5 +300,12 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         //Adding request to request queue
         MyApplication.getInstance().addToRequestQueue(strReq);
+    }
+
+    private void subscribeToTopic(String id) {
+        Intent intent = new Intent(this, GcmIntentService.class);
+        intent.putExtra(GcmIntentService.KEY, GcmIntentService.SUBSCRIBE);
+        intent.putExtra(GcmIntentService.TOPIC, "topic_" + id);
+        startService(intent);
     }
 }

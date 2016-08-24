@@ -194,8 +194,6 @@ public class ChatRoomActivity extends AppCompatActivity {
                         JSONObject userObj = obj.getJSONObject("user");
                         String userId = userObj.getString("user_id");
                         String userName = userObj.getString("name");
-                        //String private_room_id = userObj.getString("private_room_id");
-                        //String pending_request_id = userObj.getString("pending_request_id");
                         User user = new User(userId, userName, null, null, null);
 
                         Message message = new Message();
@@ -264,8 +262,6 @@ public class ChatRoomActivity extends AppCompatActivity {
      * */
     private void fetchChatThread() {
 
-        Toast.makeText(getApplicationContext(), "Fetching chat thread", Toast.LENGTH_LONG).show();
-
         String endPoint = EndPoints.CHAT_THREAD.replace("_ID_", chatRoomId);
         Log.e(TAG, "endPoint: " + endPoint);
 
@@ -282,7 +278,7 @@ public class ChatRoomActivity extends AppCompatActivity {
                     // check for error
                     if (obj.getBoolean("error") == false) {
                         JSONArray commentsObj = obj.getJSONArray("messages");
-                        Toast.makeText(getApplicationContext(), "Num messages: " + Integer.toString(commentsObj.length()), Toast.LENGTH_LONG).show();
+
                         for (int i = 0; i < commentsObj.length(); i++) {
                             JSONObject commentObj = (JSONObject) commentsObj.get(i);
 
@@ -293,8 +289,6 @@ public class ChatRoomActivity extends AppCompatActivity {
                             JSONObject userObj = commentObj.getJSONObject("user");
                             String userId = userObj.getString("user_id");
                             String userName = userObj.getString("username");
-                            //String private_room_id = userObj.getString("private_room_id");
-                            //String pending_request_id = userObj.getString("pending_request_id");
                             User user = new User(userId, userName, null, null, null);
 
                             Message message = new Message();
@@ -304,7 +298,6 @@ public class ChatRoomActivity extends AppCompatActivity {
                             message.setUser(user);
 
                             messageArrayList.add(message);
-                            Toast.makeText(getApplicationContext(), "One message found!", Toast.LENGTH_LONG).show();
                         }
 
                         mAdapter.notifyDataSetChanged();

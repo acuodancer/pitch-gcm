@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                                 userObj.getString("email"),
                                 userObj.getString("private_room_id"),
                                 userObj.getString("pending_request_id"));
-                                Toast.makeText(getApplicationContext(), user.getName() + " " + user.getPrivate_room_id() + " " + user.getPending_request_id(), Toast.LENGTH_LONG).show();
+                                // Toast.makeText(getApplicationContext(), user.getName() + " " + user.getPrivate_room_id() + " " + user.getPending_request_id(), Toast.LENGTH_LONG).show();
 
                         // storing user in shared preferences
                         MyApplication.getInstance().getPrefManager().storeUser(user);
